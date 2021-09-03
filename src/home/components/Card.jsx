@@ -2,20 +2,21 @@ import React from 'react';
 import Styled from 'styled-components';
 
 const Container = Styled.div`
-  width: 25%;
-  height: 40%;
-  border: 2px solid silver;
+  width: 28%;
+  height: 100%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const Img = Styled.img`
   width: 100%;
 `
 
-const Card = ({id, data, onClick}) => {
+const Card = ({id, data=[], onClick}) => {
   return(
-    <Container id={id} onClick={onClick}>
-      <Img src={data.url} alt="pokemon" />
+    <Container id={id} onClick={onClick} >
+      <Img src={data?.sprites?.front_default} alt="pokemon" />
     </Container>
   )
 }
