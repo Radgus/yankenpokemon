@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Styled from 'styled-components';
+import { store } from '..';
 import Card from './components/Card';
 import usePokemon from '../hooks/usePokemon';
 import field from '../resource/img/f6.jpg';
@@ -8,7 +9,6 @@ import './style.css';
 const Container = Styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: black;
   color: white;
   .board {
     width: 100%;
@@ -18,7 +18,7 @@ const Container = Styled.div`
     justify-content: space-evenly;
   }
   .npc {
-
+    background-color: red;
   }
   .mid {
     width: 100%;
@@ -30,12 +30,15 @@ const Container = Styled.div`
   }
   .user {
     align-items: flex-end;
+    background-color: blue;
   }
 `;
 
 const url = 'https://pokeapi.co/api/v2/pokemon/'
 
 const Home = () => {
+  console.log('store: ', store.getState());
+
   const initialState = {
     npc: {cn1: 0, cn2: 0, cn3: 0},
     user: {cu1: 0, cu2: 0, cu3: 0}
