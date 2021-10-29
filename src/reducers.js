@@ -1,6 +1,6 @@
 export const initialState = {
-  red: 0,
-  blue: 0
+  blueScore: 0,
+  redScore: 0,
 }
 
 export default function counter(state = {...initialState}, action) {
@@ -8,12 +8,12 @@ export default function counter(state = {...initialState}, action) {
     case 'BLUE':
       return {
         ...state,
-        blue: state.blue + 1,
+        bluePokemons: {...action.payload},
       }
     case 'RED':
       return {
         ...state,
-        blue: state.red + 1,
+        redPokemons: {...action.payload},
       }
     default:
       return state

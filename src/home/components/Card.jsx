@@ -13,7 +13,8 @@ const Img = Styled.img`
   width: 100%;
 `
 
-const Card = ({id, data=[], onClick}) => {
+const Card = ({id, data={}, onClick}) => {
+  console.log('Card Data: ', data)
   return(
     <Container id={id} onClick={onClick} >
       <Img src={data?.sprites?.front_default} alt="pokemon" />
