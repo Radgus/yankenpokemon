@@ -113,13 +113,13 @@ const Home = () => {
   *******************************************************************/
 
   // Genstion de la lógica del movimiento de las cartas. INICIO
-  const initialState = {
+  const cardStartPosition = {
     npc: {cn1: 0, cn2: 0, cn3: 0},
     user: {cu1: 0, cu2: 0, cu3: 0}
   }
 
-  const [npcState, setNpcState] = useState({...initialState.npc});
-  const [userState, setUserState] = useState({...initialState.user});
+  const [npcState, setNpcState] = useState({...cardStartPosition.npc});
+  const [userState, setUserState] = useState({...cardStartPosition.user});
 
   useEffect(() => {
     moveCard(npcState, 'npc')
@@ -151,12 +151,12 @@ const Home = () => {
   const cardSelected = (player, cardId) => {
     if(player==='npc') {
       setNpcState({
-        ...initialState.npc,
+        ...cardStartPosition.npc,
         [cardId]: 1
       })
     } else {
       setUserState({
-        ...initialState.user,
+        ...cardStartPosition.user,
         [cardId]: 1
       })
     }
@@ -180,8 +180,8 @@ const Home = () => {
 
   // Reset Game
   const resetState = () => {
-    setNpcState({...initialState.npc})
-    setUserState({...initialState.user})
+    setNpcState({...cardStartPosition.npc})
+    setUserState({...cardStartPosition.user})
     setShowChoicesPokemonMessage(false)
     setShowPlayButton(true)
     setShowFigthButton(false)
