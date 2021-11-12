@@ -21,6 +21,7 @@ const API = async () => {
 
 function* helloSaga() {
   const pokemons = yield call(API)
+  // console.log('pokemons: ', pokemons)
   yield put({ 
     type: 'BLUE',
     payload: {...pokemons} 

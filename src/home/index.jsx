@@ -86,7 +86,7 @@ const H2 = Styled.h2`
 
 const Home = () => {
   const Store = useSelector(state => state);
-  // console.log('store: ', store.getState());
+  console.log('store: ', store.getState());
   const [round, setRound] = useState(1);
   const [score, setScore] = useState({blue:0,red:0})
   const [showPlay, setShowPlayButton] = useState(true)

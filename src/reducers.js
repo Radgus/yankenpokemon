@@ -1,33 +1,15 @@
 export const initialState = {
   blueScore: 0,
-  redScore: 0,
-  userState:  {
-    cu1: {
-      state: 0,
-      redPokemon: {}
-    }, 
-    cu2: {
-      state: 0,
-      redPokemon: {}
-    },  
-    cu3: {
-      state: 0,
-      redPokemon: {}
-    }, 
+  blueState:  {
+    cu1: 0,
+    cu2: 0,
+    cu3: 0,
   },
-  npcState: {
-    cn1: {
-      state: 0,
-      redPokemon: {}
-    }, 
-    cn2: {
-      state: 0,
-      redPokemon: {}
-    },  
-    cn3: {
-      state: 0,
-      redPokemon: {}
-    }, 
+  redScore: 0,
+  redState: {
+    cu1: 0,
+    cu2: 0,
+    cu3: 0,
   }
 }
 
@@ -37,11 +19,13 @@ export default function counter(state = {...initialState}, action) {
       return {
         ...state,
         bluePokemons: {...action.payload},
+        blueState: {...state.blueState, ...action.payload},
       }
     case 'RED':
       return {
         ...state,
         redPokemons: {...action.payload},
+        redState: {...state.redState, ...action.payload},
       }
     default:
       return state
