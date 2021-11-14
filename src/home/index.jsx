@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Styled from 'styled-components';
-import { store } from '..';
 import Card from './components/Card';
 import field from '../resource/img/f6.jpg';
 import pokeIcon from '../resource/img/poke-icon.jpg';
@@ -86,13 +85,13 @@ const H2 = Styled.h2`
 
 const Home = () => {
   const Store = useSelector(state => state);
-  console.log('store: ', store.getState());
+  console.log('store: ', Store);
   const [round, setRound] = useState(1);
   const [score, setScore] = useState({blue:0,red:0})
   const [showPlay, setShowPlayButton] = useState(true)
   const [showFigth, setShowFigthButton] = useState(false)
   const [choicePokemonMessage, setShowChoicesPokemonMessage] = useState(false)
-  
+  const dispatcher = useDispatch();
   /******************************************************************
   *******************************************************************/
   
@@ -122,17 +121,19 @@ const Home = () => {
   const [userState, setUserState] = useState({...cardStartPosition.user});
 
   useEffect(() => {
-    moveCard(npcState, 'npc')
-  }, [npcState])
+    moveCard(Store.redState, 'npc')
+  }, [Store.redState])
 
   useEffect(() => {
-    moveCard(userState, 'user')
+    const blueState = Store.blueState
     
-    if(userState.cu1 !== 0 || userState.cu2 !== 0 || userState.cu3 !== 0) {
+    moveCard(blueState, 'user')
+
+    if(blueState.cu1 !== 0 || blueState.cu2 !== 0 || blueState.cu3 !== 0) {
       setShowFigthButton(true)
       setShowChoicesPokemonMessage(false)
     }
-  }, [userState])
+  }, [Store.blueState])
 
   const npcChoice = () => {
     const randomPosition = Math.floor(Math.random()*3)+1
@@ -150,15 +151,17 @@ const Home = () => {
 
   const cardSelected = (player, cardId) => {
     if(player==='npc') {
-      setNpcState({
+      const npcPosition = {
         ...cardStartPosition.npc,
         [cardId]: 1
-      })
+      }
+      dispatcher({ type: 'NPC_CARD_POSITION', payload: {...npcPosition} })
     } else {
-      setUserState({
+      const userPosition = {
         ...cardStartPosition.user,
         [cardId]: 1
-      })
+      }
+      dispatcher({ type: 'USER_CARD_POSITION', payload: {...userPosition} })
     }
   }
 
@@ -207,7 +210,6 @@ const Home = () => {
         <H1 showDisplay={showPlay} onClick={() => playGame()}>Play</H1>
         <H1 showDisplay={showFigth} onClick={() => figth()}>Figth</H1>
         <H2 showDisplay={choicePokemonMessage}>Choose a Pokemon</H2>
-        
       </div>
       <div className='board user'>
         <Card id='cu1' data={Store?.bluePokemons?.pokemon1} onClick={()=>cardSelected('user','cu1')} />

@@ -19,13 +19,21 @@ export default function counter(state = {...initialState}, action) {
       return {
         ...state,
         bluePokemons: {...action.payload},
-        blueState: {...state.blueState, ...action.payload},
+      }
+    case 'USER_CARD_POSITION':
+      return {
+        ...state,
+        blueState: {...action.payload},
       }
     case 'RED':
       return {
         ...state,
         redPokemons: {...action.payload},
-        redState: {...state.redState, ...action.payload},
+      }
+    case 'NPC_CARD_POSITION':
+      return {
+        ...state,
+        redState: {...action.payload},
       }
     default:
       return state
