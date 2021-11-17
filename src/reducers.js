@@ -25,6 +25,11 @@ export default function counter(state = {...initialState}, action) {
         ...state,
         blueState: {...action.payload},
       }
+    case 'BLUE_POINT':
+      return {
+        ...state,
+        blueScore: state.blueScore + 1,
+      }
     case 'RED':
       return {
         ...state,
@@ -34,6 +39,11 @@ export default function counter(state = {...initialState}, action) {
       return {
         ...state,
         redState: {...action.payload},
+      }
+    case 'RED_POINT':
+      return {
+        ...state,
+        redScore: state.redScore + 1,
       }
     default:
       return state

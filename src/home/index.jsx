@@ -2,86 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Styled from 'styled-components';
 import Card from './components/Card';
-import field from '../resource/img/f6.jpg';
-import pokeIcon from '../resource/img/poke-icon.jpg';
-import './style.css';
-
-const Container = Styled.div`
-  width: 100vw;
-  height: calc(100vh - 5rem);
-  color: white;
-  .board {
-    width: 100%;
-    height: 18%;
-    padding: 2% 5%;
-    display: flex;
-    justify-content: space-evenly;
-  }
-  .npc {
-    background-color: red;
-  }
-  .mid {
-    width: 100%;
-    height: 64%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url(${field});
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  .user {
-    align-items: flex-end;
-    background-color: blue;
-  }
-`;
-
-const Button = Styled.button`
-  width: 8rem;
-  height: 2.2rem;
-`;
-
-const Header = Styled.div`
-  height: 5rem;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const Img = Styled.img`
-  width: ${props => props.width ? props.width : '35rem'};
-  height: ${props => props.height ? props.height : '35rem'};
-  display: ${props => props.showDisplay ? 'inline' : 'none'};
-  cursor: pointer; 
-`;
-
-const H1 = Styled.h1`
-  width: 8rem;
-  height: 8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 2.7rem;
-  border-radius: 50%;
-  background-color: black;
-  display: ${props => props.showDisplay ? 'inline-flex' : 'none'};
-`;
-
-const H2 = Styled.h2`
-  position: absolute;
-  bottom: 11rem;
-  width: 85%;
-  height: 4rem;
-  color: white;
-  text-align: center;
-  font-size: 2.7rem;
-  border-radius: 2rem;
-  background-color: black;
-  display: ${props => props.showDisplay ? 'inline' : 'none'};
-`;
-
+import {Container, Button, Header, H1, H2} from './styles';
+import './index.css';
 
 const Home = () => {
   const Store = useSelector(state => state);
@@ -103,9 +25,29 @@ const Home = () => {
   }
 
   const figth = () => {
-    
-    console.log('win: ')
+
+    const bt = pokemonType();  // blueType
+    const rt = 'fire';   // redType
+
+    if ( (bt==='grass' && rt==='water') || (bt==='water' && rt==='fire') || 
+         (bt==='fire' && rt==='grass') ) {
+      dispatcher({ type: 'BLUE_POINT' })
+      console.log('blue win!!!')
+    }
+  
+    if ( (rt==='grass' && bt==='water') || (rt ==='water' && bt ==='fire') || 
+         (rt==='fire' && bt==='grass') ) {
+      dispatcher({ type: 'RED_POINT' })
+      console.log('red win!!!')
+    }
+
   }
+  
+  const pokemonType = () => {
+    return 'grass'
+  }
+
+
   // Lógica de la mecánica del juego. FIN
 
   /******************************************************************
@@ -116,9 +58,6 @@ const Home = () => {
     npc: {cn1: 0, cn2: 0, cn3: 0},
     user: {cu1: 0, cu2: 0, cu3: 0}
   }
-
-  const [npcState, setNpcState] = useState({...cardStartPosition.npc});
-  const [userState, setUserState] = useState({...cardStartPosition.user});
 
   useEffect(() => {
     moveCard(Store.redState, 'npc')
@@ -183,8 +122,8 @@ const Home = () => {
 
   // Reset Game
   const resetState = () => {
-    setNpcState({...cardStartPosition.npc})
-    setUserState({...cardStartPosition.user})
+    dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
+    dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
     setShowChoicesPokemonMessage(false)
     setShowPlayButton(true)
     setShowFigthButton(false)
