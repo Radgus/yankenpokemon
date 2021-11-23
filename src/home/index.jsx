@@ -26,25 +26,36 @@ const Home = () => {
 
   const figth = () => {
 
-    const bt = pokemonType();  // blueType
-    const rt = 'fire';   // redType
+    const bt = bluePokemonType();  // blueType
+    console.log(bt)
+    const rt = redPokemonType();   // redType
+    console.log(rt)
 
+    console.log('111')
     if ( (bt==='grass' && rt==='water') || (bt==='water' && rt==='fire') || 
          (bt==='fire' && rt==='grass') ) {
       dispatcher({ type: 'BLUE_POINT' })
       console.log('blue win!!!')
     }
-  
+    console.log('222')
     if ( (rt==='grass' && bt==='water') || (rt ==='water' && bt ==='fire') || 
          (rt==='fire' && bt==='grass') ) {
       dispatcher({ type: 'RED_POINT' })
       console.log('red win!!!')
     }
-
+    console.log('333')
   }
   
-  const pokemonType = () => {
-    return 'grass'
+  const bluePokemonType = () => {
+    if (Store.blueState.cu1 === 1) return Store.bluePokemons.pokemon1.types[0].type.name;
+    if (Store.blueState.cu2 === 1) return Store.bluePokemons.pokemon2.types[0].type.name;
+    if (Store.blueState.cu3 === 1) return Store.bluePokemons.pokemon3.types[0].type.name;
+  }
+
+  const redPokemonType = () => {
+    if (Store.redState.cn1 === 1) return Store.redPokemons.pokemon1.types[0].type.name;
+    if (Store.redState.cn2 === 1) return Store.redPokemons.pokemon2.types[0].type.name;
+    if (Store.redState.cn3 === 1) return Store.redPokemons.pokemon3.types[0].type.name;
   }
 
 
