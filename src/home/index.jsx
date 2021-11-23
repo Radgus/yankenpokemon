@@ -9,14 +9,15 @@ const Home = () => {
   const Store = useSelector(state => state);
   console.log('store: ', Store);
   const [round, setRound] = useState(1);
-  const [score, setScore] = useState({blue:0,red:0})
   const [showPlay, setShowPlayButton] = useState(true)
+  const [showPlayAgain, setShowPlayAgainButton] = useState(false)
   const [showFigth, setShowFigthButton] = useState(false)
   const [choicePokemonMessage, setShowChoicesPokemonMessage] = useState(false)
   const dispatcher = useDispatch();
+
   /******************************************************************
+   * 
   *******************************************************************/
-  
   // Lógica de la mecánica del juego. INICIO
   const playGame = () => {
     npcChoice()
@@ -27,23 +28,29 @@ const Home = () => {
   const figth = () => {
 
     const bt = bluePokemonType();  // blueType
-    console.log(bt)
     const rt = redPokemonType();   // redType
-    console.log(rt)
 
-    console.log('111')
     if ( (bt==='grass' && rt==='water') || (bt==='water' && rt==='fire') || 
          (bt==='fire' && rt==='grass') ) {
       dispatcher({ type: 'BLUE_POINT' })
-      console.log('blue win!!!')
     }
-    console.log('222')
+
     if ( (rt==='grass' && bt==='water') || (rt ==='water' && bt ==='fire') || 
          (rt==='fire' && bt==='grass') ) {
       dispatcher({ type: 'RED_POINT' })
-      console.log('red win!!!')
     }
-    console.log('333')
+
+    // animación de combate. INICIO
+
+    // animación de combate. FIN 
+
+    setTimeout(() => {
+      dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
+      dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
+      resetSet()
+    }, 1000);
+
+
   }
   
   const bluePokemonType = () => {
@@ -58,13 +65,17 @@ const Home = () => {
     if (Store.redState.cn3 === 1) return Store.redPokemons.pokemon3.types[0].type.name;
   }
 
+  const resetSet = () => {
+    setRound(round + 1)
+    setShowFigthButton(false)
+    setShowPlayButton(true)
+  }
 
   // Lógica de la mecánica del juego. FIN
-
   /******************************************************************
+   * 
   *******************************************************************/
-
-  // Genstion de la lógica del movimiento de las cartas. INICIO
+  // Gestion de la lógica del movimiento de las cartas. INICIO
   const cardStartPosition = {
     npc: {cn1: 0, cn2: 0, cn3: 0},
     user: {cu1: 0, cu2: 0, cu3: 0}
@@ -79,7 +90,7 @@ const Home = () => {
     
     moveCard(blueState, 'user')
 
-    if(blueState.cu1 !== 0 || blueState.cu2 !== 0 || blueState.cu3 !== 0) {
+    if(blueState.cu1 === 1 || blueState.cu2 === 1 || blueState.cu3 === 1) {
       setShowFigthButton(true)
       setShowChoicesPokemonMessage(false)
     }
@@ -126,28 +137,31 @@ const Home = () => {
         }
       });
   }
-  // Genstion de la lógica del movimiento de las cartas. FIN
+  // Gestion de la lógica del movimiento de las cartas. FIN
 
   /******************************************************************
   *******************************************************************/
 
   // Reset Game
-  const resetState = () => {
+  const resetGame = () => {
     dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
     dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
+    dispatcher({ type: 'RESET_SCORE' })
     setShowChoicesPokemonMessage(false)
     setShowPlayButton(true)
     setShowFigthButton(false)
+    setRound(1)
+    setShowPlayAgainButton(false)
   }
 
   return(
     <>
     <Header>
-      <Button type='button' onClick={resetState}>Reset game</Button>
+      <Button type='button' onClick={resetGame}>Reset game</Button>
       <h2>Round {round}</h2>
       <div>
         <h2>Score </h2>
-        <h3>blue: {score.blue} red: {score.red}</h3>
+        <h3>red: {Store.redScore} blue: {Store.blueScore} </h3>
       </div>
     </Header>
     <Container>
@@ -159,6 +173,12 @@ const Home = () => {
       <div className='mid'>
         <H1 showDisplay={showPlay} onClick={() => playGame()}>Play</H1>
         <H1 showDisplay={showFigth} onClick={() => figth()}>Figth</H1>
+        <H1 
+          showDisplay={showPlayAgain} 
+          borderRadius={'20%'} 
+          onClick={() => resetGame()}>
+            Play Again
+        </H1>
         <H2 showDisplay={choicePokemonMessage}>Choose a Pokemon</H2>
       </div>
       <div className='board user'>

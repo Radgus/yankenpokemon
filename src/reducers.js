@@ -45,6 +45,12 @@ export default function counter(state = {...initialState}, action) {
         ...state,
         redScore: state.redScore + 1,
       }
+    case 'RESET_SCORE':
+      return {
+        ...state,
+        blueScore: 0,
+        redScore: 0,
+      }
     default:
       return state
   }

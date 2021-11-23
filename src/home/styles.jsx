@@ -52,16 +52,17 @@ export const Img = Styled.img`
 `;
 
 export const H1 = Styled.h1`
-  width: 8rem;
+  min-width: 8rem;
   height: 8rem;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 2.7rem;
-  border-radius: 50%;
+  border-radius: ${props => props.borderRadius ? props.borderRadius : '50%'};
   background-color: black;
   display: ${props => props.showDisplay ? 'inline-flex' : 'none'};
+  padding: 0 0.8rem;
 `;
 
 export const H2 = Styled.h2`
