@@ -1,7 +1,7 @@
-import Styled from 'styled-components';
+import styled from 'styled-components';
 import field from '../resource/img/f6.jpg';
 
-export const Container = Styled.div`
+export const Container = styled.div`
   width: 100vw;
   height: calc(100vh - 5rem);
   color: white;
@@ -32,26 +32,26 @@ export const Container = Styled.div`
   }
 `;
 
-export const Button = Styled.button`
+export const Button = styled.button`
   width: 8rem;
   height: 2.2rem;
 `;
 
-export const Header = Styled.div`
+export const Header = styled.div`
   height: 5rem;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `;
 
-export const Img = Styled.img`
+export const Img = styled.img`
   width: ${props => props.width ? props.width : '35rem'};
   height: ${props => props.height ? props.height : '35rem'};
   display: ${props => props.showDisplay ? 'inline' : 'none'};
   cursor: pointer; 
 `;
 
-export const H1 = Styled.h1`
+export const H1 = styled.h1`
   min-width: 8rem;
   height: 8rem;
   display: flex;
@@ -65,7 +65,7 @@ export const H1 = Styled.h1`
   padding: 0 0.8rem;
 `;
 
-export const H2 = Styled.h2`
+export const H2 = styled.h2`
   position: absolute;
   bottom: 11rem;
   width: 85%;
@@ -76,4 +76,8 @@ export const H2 = Styled.h2`
   border-radius: 2rem;
   background-color: black;
   display: ${props => props.showDisplay ? 'inline' : 'none'};
+`;
+
+export const H2T = styled(H2)`
+  top: 16rem;
 `;

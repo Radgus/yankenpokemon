@@ -7,6 +7,9 @@ const Container = Styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
+  top: 0;
+  transition: top 1s ease-in-out;
 `;
 
 const Img = Styled.img`

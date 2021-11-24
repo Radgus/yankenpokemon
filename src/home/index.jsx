@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Styled from 'styled-components';
 import Card from './components/Card';
-import {Container, Button, Header, H1, H2} from './styles';
-import './index.css';
+import {Container, Button, Header, H1, H2, H2T} from './styles';
 
 const Home = () => {
   const Store = useSelector(state => state);
@@ -13,6 +11,8 @@ const Home = () => {
   const [showPlayAgain, setShowPlayAgainButton] = useState(false)
   const [showFigth, setShowFigthButton] = useState(false)
   const [choicePokemonMessage, setShowChoicesPokemonMessage] = useState(false)
+  const [teamWinerMessage, setTeamWinerMessage] = useState(false)
+  const [teamWinerPoint, setTeamWinerPoint] = useState('no')
   const dispatcher = useDispatch();
 
   /******************************************************************
@@ -27,17 +27,21 @@ const Home = () => {
 
   const figth = () => {
 
+    setShowFigthButton(false)
+
     const bt = bluePokemonType();  // blueType
     const rt = redPokemonType();   // redType
 
     if ( (bt==='grass' && rt==='water') || (bt==='water' && rt==='fire') || 
          (bt==='fire' && rt==='grass') ) {
       dispatcher({ type: 'BLUE_POINT' })
+      setTeamWinerPoint('blue')
     }
 
     if ( (rt==='grass' && bt==='water') || (rt ==='water' && bt ==='fire') || 
          (rt==='fire' && bt==='grass') ) {
       dispatcher({ type: 'RED_POINT' })
+      setTeamWinerPoint('red')
     }
 
     // animación de combate. INICIO
@@ -45,10 +49,14 @@ const Home = () => {
     // animación de combate. FIN 
 
     setTimeout(() => {
+      setTeamWinerMessage(true)
+    }, 500);
+
+    setTimeout(() => {
       dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
       dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
       resetSet()
-    }, 1000);
+    }, 3000);
 
 
   }
@@ -69,6 +77,8 @@ const Home = () => {
     setRound(round + 1)
     setShowFigthButton(false)
     setShowPlayButton(true)
+    setTeamWinerMessage(false)
+    setTeamWinerPoint('no')
   }
 
   // Lógica de la mecánica del juego. FIN
@@ -171,6 +181,7 @@ const Home = () => {
         <Card id='cn3' data={Store?.redPokemons?.pokemon3} />
       </div>
       <div className='mid'>
+        <H2T showDisplay={teamWinerMessage}>Point for {teamWinerPoint} team</H2T>
         <H1 showDisplay={showPlay} onClick={() => playGame()}>Play</H1>
         <H1 showDisplay={showFigth} onClick={() => figth()}>Figth</H1>
         <H1 
