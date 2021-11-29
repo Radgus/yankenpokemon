@@ -6,10 +6,6 @@ import {Container, Button, Header, H1, H2, H2T} from './styles';
 const Home = () => {
   const Store = useSelector(state => state);
   console.log('store: ', Store);
-  const [round, setRound] = useState(1);
-  const [showPlay, setShowPlayButton] = useState(true)
-  const [showPlayAgain, setShowPlayAgainButton] = useState(false)
-  const [showFigth, setShowFigthButton] = useState(false)
   const [choicePokemonMessage, setShowChoicesPokemonMessage] = useState(false)
   const [teamWinerMessage, setTeamWinerMessage] = useState(false)
   const [teamWinerPoint, setTeamWinerPoint] = useState('no')
@@ -22,12 +18,12 @@ const Home = () => {
   const playGame = () => {
     npcChoice()
     setShowChoicesPokemonMessage(true)
-    setShowPlayButton(false)
+    dispatcher({ type: 'SHOW_PLAY', payload: false })
   }
 
   const figth = () => {
 
-    setShowFigthButton(false)
+    dispatcher({ type: 'SHOW_FIGTH', payload: false })
 
     const bt = bluePokemonType();  // blueType
     const rt = redPokemonType();   // redType
@@ -55,7 +51,7 @@ const Home = () => {
     setTimeout(() => {
       dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
       dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
-      resetSet()
+      nextSet()
     }, 3000);
 
 
@@ -73,10 +69,10 @@ const Home = () => {
     if (Store.redState.cn3 === 1) return Store.redPokemons.pokemon3.types[0].type.name;
   }
 
-  const resetSet = () => {
-    setRound(round + 1)
-    setShowFigthButton(false)
-    setShowPlayButton(true)
+  const nextSet = () => {
+    dispatcher({ type: 'ROUND', payload: Store.round + 1 })
+    dispatcher({ type: 'SHOW_PLAY', payload: true })
+    dispatcher({ type: 'SHOW_FIGTH', payload: false })
     setTeamWinerMessage(false)
     setTeamWinerPoint('no')
   }
@@ -101,7 +97,7 @@ const Home = () => {
     moveCard(blueState, 'user')
 
     if(blueState.cu1 === 1 || blueState.cu2 === 1 || blueState.cu3 === 1) {
-      setShowFigthButton(true)
+      dispatcher({ type: 'SHOW_FIGTH', payload: true })
       setShowChoicesPokemonMessage(false)
     }
   }, [Store.blueState])
@@ -111,10 +107,8 @@ const Home = () => {
     switch (randomPosition) {
       case 1: cardSelected('npc','cn1')
         break;
-
-      case 2: cardSelected('npc','cn2')
+      case 2: cardSelected('npc','cn2') 
         break;
-
       default: cardSelected('npc','cn3')
         break;
     }
@@ -157,18 +151,19 @@ const Home = () => {
     dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
     dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
     dispatcher({ type: 'RESET_SCORE' })
+    dispatcher({ type: 'ROUND', payload: 1 })
+    dispatcher({ type: 'SHOW_PLAY', payload: true })
+    dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: false })
     setShowChoicesPokemonMessage(false)
-    setShowPlayButton(true)
-    setShowFigthButton(false)
-    setRound(1)
-    setShowPlayAgainButton(false)
+    dispatcher({ type: 'SHOW_FIGTH', payload: false })
+    
   }
 
   return(
     <>
     <Header>
       <Button type='button' onClick={resetGame}>Reset game</Button>
-      <h2>Round {round}</h2>
+      <h2>Round {Store.round}</h2>
       <div>
         <h2>Score </h2>
         <h3>red: {Store.redScore} blue: {Store.blueScore} </h3>
@@ -182,12 +177,12 @@ const Home = () => {
       </div>
       <div className='mid'>
         <H2T showDisplay={teamWinerMessage}>Point for {teamWinerPoint} team</H2T>
-        <H1 showDisplay={showPlay} onClick={() => playGame()}>Play</H1>
-        <H1 showDisplay={showFigth} onClick={() => figth()}>Figth</H1>
+        <H1 showDisplay={Store.showPlay} onClick={() => playGame()}>Play</H1>
+        <H1 showDisplay={Store.showFigth} onClick={() => figth()}>Figth</H1>
         <H1 
-          showDisplay={showPlayAgain} 
+          showDisplay={Store.showPlayAgain} 
           borderRadius={'20%'} 
-          onClick={() => resetGame()}>
+          onClick={resetGame}>
             Play Again
         </H1>
         <H2 showDisplay={choicePokemonMessage}>Choose a Pokemon</H2>
