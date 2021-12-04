@@ -5,10 +5,7 @@ import {Container, Button, Header, H1, H2, H2T} from './styles';
 
 const Home = () => {
   const Store = useSelector(state => state);
-  console.log('store: ', Store);
-  const [choicePokemonMessage, setShowChoicesPokemonMessage] = useState(false)
-  const [teamWinerMessage, setTeamWinerMessage] = useState(false)
-  const [teamWinerPoint, setTeamWinerPoint] = useState('no')
+  // console.log('store: ', Store);
   const dispatcher = useDispatch();
 
   /******************************************************************
@@ -17,7 +14,7 @@ const Home = () => {
   // Lógica de la mecánica del juego. INICIO
   const playGame = () => {
     npcChoice()
-    setShowChoicesPokemonMessage(true)
+    dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: true })
     dispatcher({ type: 'SHOW_PLAY', payload: false })
   }
 
@@ -31,13 +28,13 @@ const Home = () => {
     if ( (bt==='grass' && rt==='water') || (bt==='water' && rt==='fire') || 
          (bt==='fire' && rt==='grass') ) {
       dispatcher({ type: 'BLUE_POINT' })
-      setTeamWinerPoint('blue')
+      dispatcher({ type: 'TEAM_WINER_POINT', payload: 'blue' })
     }
 
     if ( (rt==='grass' && bt==='water') || (rt ==='water' && bt ==='fire') || 
          (rt==='fire' && bt==='grass') ) {
       dispatcher({ type: 'RED_POINT' })
-      setTeamWinerPoint('red')
+      dispatcher({ type: 'TEAM_WINER_POINT', payload: 'red' })
     }
 
     // animación de combate. INICIO
@@ -45,7 +42,7 @@ const Home = () => {
     // animación de combate. FIN 
 
     setTimeout(() => {
-      setTeamWinerMessage(true)
+      dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: true })
     }, 500);
 
     setTimeout(() => {
@@ -73,8 +70,9 @@ const Home = () => {
     dispatcher({ type: 'ROUND', payload: Store.round + 1 })
     dispatcher({ type: 'SHOW_PLAY', payload: true })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
-    setTeamWinerMessage(false)
-    setTeamWinerPoint('no')
+    dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
+    dispatcher({ type: 'TEAM_WINER_POINT', payload: 'no' })
+    
   }
 
   // Lógica de la mecánica del juego. FIN
@@ -98,7 +96,7 @@ const Home = () => {
 
     if(blueState.cu1 === 1 || blueState.cu2 === 1 || blueState.cu3 === 1) {
       dispatcher({ type: 'SHOW_FIGTH', payload: true })
-      setShowChoicesPokemonMessage(false)
+      dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: false })
     }
   }, [Store.blueState])
 
@@ -154,7 +152,7 @@ const Home = () => {
     dispatcher({ type: 'ROUND', payload: 1 })
     dispatcher({ type: 'SHOW_PLAY', payload: true })
     dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: false })
-    setShowChoicesPokemonMessage(false)
+    dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: false })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
     
   }
@@ -176,16 +174,16 @@ const Home = () => {
         <Card id='cn3' data={Store?.redPokemons?.pokemon3} />
       </div>
       <div className='mid'>
-        <H2T showDisplay={teamWinerMessage}>Point for {teamWinerPoint} team</H2T>
+        <H2T showDisplay={Store.teamWinerMessage}>Point for {Store.teamWinerPoint} team</H2T>
         <H1 showDisplay={Store.showPlay} onClick={() => playGame()}>Play</H1>
         <H1 showDisplay={Store.showFigth} onClick={() => figth()}>Figth</H1>
         <H1 
           showDisplay={Store.showPlayAgain} 
-          borderRadius={'20%'} 
+          borderRadius={'20%'}
           onClick={resetGame}>
             Play Again
         </H1>
-        <H2 showDisplay={choicePokemonMessage}>Choose a Pokemon</H2>
+        <H2 showDisplay={Store.choicePokemonMessage}>Choose a Pokemon</H2>
       </div>
       <div className='board user'>
         <Card id='cu1' data={Store?.bluePokemons?.pokemon1} onClick={()=>cardSelected('user','cu1')} />
