@@ -2,6 +2,21 @@ import { put, takeEvery, all, call } from 'redux-saga/effects'
 
 const url = 'https://pokeapi.co/api/v2/pokemon/'
 
+const sequenceFunction = () => {
+  const sequence = [3,6,9]
+
+  for (let i = 0; i < 20; i++) {
+    const i1 =  Math.floor(Math.random()*3)
+    const i2 =  Math.floor(Math.random()*3)
+    const v1 = sequence[i1]
+    const v2 = sequence[i2]
+  
+    sequence.splice(i1,1,v2)
+    sequence.splice(i2,1,v1)
+  }
+  return sequence
+}
+
 const fetchData = async (num) => {
   const response = await fetch(`${url}${num}`)
   const data = await response.json()
@@ -9,9 +24,11 @@ const fetchData = async (num) => {
 }
 
 const API = async () => {
-  const pokemon1 = await fetchData(3)
-  const pokemon2 = await fetchData(6)
-  const pokemon3 = await fetchData(9)
+  const sequence = sequenceFunction();
+
+  const pokemon1 = await fetchData(sequence[0])
+  const pokemon2 = await fetchData(sequence[1])
+  const pokemon3 = await fetchData(sequence[2])
   return {
     pokemon1: { ...pokemon1 },
     pokemon2: { ...pokemon2 },
@@ -20,15 +37,16 @@ const API = async () => {
 }
 
 function* helloSaga() {
-  const pokemons = yield call(API)
+  const pokemonsBlue = yield call(API)
+  const pokemonsRed = yield call(API)
   // console.log('pokemons: ', pokemons)
   yield put({ 
     type: 'BLUE',
-    payload: {...pokemons} 
+    payload: {...pokemonsBlue} 
   })
   yield put({ 
     type: 'RED',
-    payload: {...pokemons} 
+    payload: {...pokemonsRed} 
   })
 }
 
