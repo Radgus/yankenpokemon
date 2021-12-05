@@ -5,7 +5,9 @@ import {Container, Button, Header, H1, H2, H2T} from './styles';
 
 const Home = () => {
   const Store = useSelector(state => state);
-  // console.log('store: ', Store);
+  const [showVictoryMessage, setShowVictoryMessage] = useState(false);
+  const [winner, setWinner] = useState('');
+  console.log('store: ', Store);
   const dispatcher = useDispatch();
 
   /******************************************************************
@@ -46,12 +48,18 @@ const Home = () => {
     }, 500);
 
     setTimeout(() => {
-      dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
-      dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
-      nextSet()
-    }, 3000);
-
-
+      if (Store.blueScore === 3 || Store.redScore === 3) {
+        Store.blueScore === 3 ? setWinner('blue') : setWinner('red') 
+        dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
+        setShowVictoryMessage(true)
+        dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: true })
+      } else {
+        dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
+        dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
+        nextSet()
+      }
+    }, 2000);
+    
   }
   
   const bluePokemonType = () => {
@@ -154,7 +162,6 @@ const Home = () => {
     dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: false })
     dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: false })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
-    
   }
 
   return(
@@ -174,6 +181,7 @@ const Home = () => {
         <Card id='cn3' data={Store?.redPokemons?.pokemon3} />
       </div>
       <div className='mid'>
+        <H2T showDisplay={showVictoryMessage}>Team {winner} Winer !!!</H2T>
         <H2T showDisplay={Store.teamWinerMessage}>Point for {Store.teamWinerPoint} team</H2T>
         <H1 showDisplay={Store.showPlay} onClick={() => playGame()}>Play</H1>
         <H1 showDisplay={Store.showFigth} onClick={() => figth()}>Figth</H1>
