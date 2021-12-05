@@ -13,7 +13,28 @@ const Home = () => {
   /******************************************************************
    * 
   *******************************************************************/
+  // Lógica de la VICTORIA del juego.
+  useEffect(() => {
+    if (Store.blueScore === 3 || Store.redScore === 3) {
+      Store.blueScore === 3 ? setWinner('blue') : setWinner('red') 
+      setTimeout(() => {
+        dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
+        setShowVictoryMessage(true)
+        dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: true })
+      }, 2000);
+    }
+    else {
+      setTimeout(() => {
+        dispatcher({ type: 'SHOW_PLAY', payload: true })
+      }, 2000);
+    }
+  }, [Store.blueScore, Store.redScore])
+
+  /******************************************************************
+   * 
+  *******************************************************************/
   // Lógica de la mecánica del juego. INICIO
+
   const playGame = () => {
     npcChoice()
     dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: true })
@@ -48,16 +69,9 @@ const Home = () => {
     }, 500);
 
     setTimeout(() => {
-      if (Store.blueScore === 3 || Store.redScore === 3) {
-        Store.blueScore === 3 ? setWinner('blue') : setWinner('red') 
-        dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
-        setShowVictoryMessage(true)
-        dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: true })
-      } else {
-        dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
-        dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
-        nextSet()
-      }
+      dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
+      dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
+      nextSet()
     }, 2000);
     
   }
@@ -76,7 +90,7 @@ const Home = () => {
 
   const nextSet = () => {
     dispatcher({ type: 'ROUND', payload: Store.round + 1 })
-    dispatcher({ type: 'SHOW_PLAY', payload: true })
+    // dispatcher({ type: 'SHOW_PLAY', payload: true })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
     dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
     dispatcher({ type: 'TEAM_WINER_POINT', payload: 'no' })
@@ -162,6 +176,7 @@ const Home = () => {
     dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: false })
     dispatcher({ type: 'CHOICE_POKEMON_MESSAGE', payload: false })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
+    setShowVictoryMessage(false)
   }
 
   return(
