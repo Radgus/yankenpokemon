@@ -82,7 +82,6 @@ const Home = () => {
     }, 3000);
     
   }
-
  
   
   const bluePokemonType = () => {
