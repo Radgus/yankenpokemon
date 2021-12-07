@@ -5,9 +5,14 @@ import {Container, Button, Header, H1, H2, H2T} from './styles';
 
 const Home = () => {
   const Store = useSelector(state => state);
+  console.log('store: ', Store);
+
   const [showVictoryMessage, setShowVictoryMessage] = useState(false);
   const [winner, setWinner] = useState('');
-  console.log('store: ', Store);
+
+  const resetChangeArray = {car1: true, card2: true, card3: true}
+  const [changeArray, setChangeArray] = useState({...resetChangeArray});
+
   const dispatcher = useDispatch();
 
   /******************************************************************
@@ -26,9 +31,9 @@ const Home = () => {
     else {
       setTimeout(() => {
         dispatcher({ type: 'SHOW_PLAY', payload: true })
-      }, 2000);
+      }, 4000);
     }
-  }, [Store.blueScore, Store.redScore])
+  }, [Store.teamWinerPoint])
 
   /******************************************************************
    * 
@@ -42,6 +47,29 @@ const Home = () => {
   }
 
   const figth = () => {
+
+    
+    // animación de combate. INICIO
+
+    if(Store.redState.cn1 === 1) {
+      const tmp = {...changeArray}
+      tmp.card1 = false;
+      setChangeArray({...tmp})
+    }
+
+    if(Store.redState.cn2 === 1) {
+      const tmp = {...changeArray}
+      tmp.card2 = false;
+      setChangeArray({...tmp})
+    }
+
+    if(Store.redState.cn3 === 1) {
+      const tmp = {...changeArray}
+      tmp.card3 = false;
+      setChangeArray({...tmp})
+    }
+
+    // animación de combate. FIN 
 
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
 
@@ -60,9 +88,12 @@ const Home = () => {
       dispatcher({ type: 'TEAM_WINER_POINT', payload: 'red' })
     }
 
-    // animación de combate. INICIO
-
-    // animación de combate. FIN 
+    if ( rt===bt ) {
+      dispatcher({ type: 'TEAM_WINER_POINT', payload: 'no' })
+      setTimeout(() => {
+        dispatcher({ type: 'SHOW_PLAY', payload: true })
+      }, 4000);
+    }
 
     setTimeout(() => {
       dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: true })
@@ -71,8 +102,11 @@ const Home = () => {
     setTimeout(() => {
       dispatcher({ type: 'USER_CARD_POSITION', payload: {...cardStartPosition.user} })
       dispatcher({ type: 'NPC_CARD_POSITION', payload: {...cardStartPosition.npc} })
-      nextSet()
     }, 2000);
+
+    setTimeout(() => {
+      nextSet()
+    }, 4000);
     
   }
   
@@ -93,8 +127,34 @@ const Home = () => {
     // dispatcher({ type: 'SHOW_PLAY', payload: true })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
     dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
-    dispatcher({ type: 'TEAM_WINER_POINT', payload: 'no' })
+    // dispatcher({ type: 'TEAM_WINER_POINT', payload: 'no' })
+    setChangeArray({...resetChangeArray})
+    sequenceFunction()
+  }
+
+  const sequenceFunction = () => {
+    const p1 = {...Store.redPokemons.pokemon1}
+    const p2 = {...Store.redPokemons.pokemon2}
+    const p3 = {...Store.redPokemons.pokemon3}
+    const sequence = [p1,p2,p3]
+  
+    for (let i = 0; i < 5; i++) {
+      const i1 =  Math.floor(Math.random()*3)
+      const i2 =  Math.floor(Math.random()*3)
+      const v1 = {...sequence[i1]}
+      const v2 = {...sequence[i2]}
     
+      sequence.splice(i1,1,v2)
+      sequence.splice(i2,1,v1)
+    }
+
+    const redPokemons = {
+      pokemon1: { ...sequence[0] },
+      pokemon2: { ...sequence[1] },
+      pokemon3: { ...sequence[2] },
+    }
+
+    dispatcher({type: 'RED', payload: {...redPokemons} })
   }
 
   // Lógica de la mecánica del juego. FIN
@@ -191,9 +251,12 @@ const Home = () => {
     </Header>
     <Container>
       <div className='board npc'>
-        <Card id='cn1' data={Store?.redPokemons?.pokemon1} />
-        <Card id='cn2' data={Store?.redPokemons?.pokemon2} />
-        <Card id='cn3' data={Store?.redPokemons?.pokemon3} />
+        <Card id='cn1' data={Store?.redPokemons?.pokemon1} change={false}/>
+        <Card id='cn2' data={Store?.redPokemons?.pokemon2} change={false}/>
+        <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={false}/>
+        {/* <Card id='cn1' data={Store?.redPokemons?.pokemon1} change={changeArray.card1}/>
+        <Card id='cn2' data={Store?.redPokemons?.pokemon2} change={changeArray.card2}/>
+        <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={changeArray.card3}/> */}
       </div>
       <div className='mid'>
         <H2T showDisplay={showVictoryMessage}>Team {winner} Winer !!!</H2T>
@@ -209,9 +272,9 @@ const Home = () => {
         <H2 showDisplay={Store.choicePokemonMessage}>Choose a Pokemon</H2>
       </div>
       <div className='board user'>
-        <Card id='cu1' data={Store?.bluePokemons?.pokemon1} onClick={()=>cardSelected('user','cu1')} />
-        <Card id='cu2' data={Store?.bluePokemons?.pokemon2} onClick={()=>cardSelected('user','cu2')} />
-        <Card id='cu3' data={Store?.bluePokemons?.pokemon3} onClick={()=>cardSelected('user','cu3')} />
+        <Card id='cu1' data={Store?.bluePokemons?.pokemon1} onClick={()=>cardSelected('user','cu1')} player='user'/>
+        <Card id='cu2' data={Store?.bluePokemons?.pokemon2} onClick={()=>cardSelected('user','cu2')} player='user'/>
+        <Card id='cu3' data={Store?.bluePokemons?.pokemon3} onClick={()=>cardSelected('user','cu3')} player='user'/>
       </div>
     </Container>
     </>

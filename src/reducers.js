@@ -9,7 +9,7 @@ export const initialState = {
   showFigth: false,
   choicePokemonMessage: false,
   teamWinerMessage: false,
-  teamWinerPoint: 'no',
+  teamWinerPoint: '',
 }
 
 export default function counter(state = {...initialState}, action) {
