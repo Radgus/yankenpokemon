@@ -122,23 +122,23 @@ const Home = () => {
   }
 
   const nextSet = () => {
-    dispatcher({ type: 'ROUND', payload: Store.round + 1 })
     dispatcher({ type: 'SHOW_FIGTH', payload: false })
     dispatcher({ type: 'TEAM_WINER_MESSAGE', payload: false })
     setChangeCards({...resetChangeArray})
     sequenceFunction();
-    nextGame();
+    dispatcher({ type: 'ROUND', payload: Store.round + 1 })
   }
 
-  const nextGame = () => {
+  useEffect(() => {
     if (Store.blueScore === 3 || Store.redScore === 3) {
       Store.blueScore === 3 ? setWinner('blue') : setWinner('red') 
       setShowVictoryMessage(true)
+      dispatcher({ type: 'SHOW_PLAY', payload: false })
       dispatcher({ type: 'SHOW_PLAY_AGAIN', payload: true })
     } else {
       dispatcher({ type: 'SHOW_PLAY', payload: true })
     }
-  }
+  }, [Store.round])
 
   // Lógica de la mecánica del juego. FIN
   /******************************************************************
@@ -185,11 +185,13 @@ const Home = () => {
       }
       dispatcher({ type: 'NPC_CARD_POSITION', payload: {...npcPosition} })
     } else {
-      const userPosition = {
-        ...cardStartPosition.user,
-        [cardId]: 1
+      if (Store.showPlay === false && Store.showPlayAgain === false) {
+        const userPosition = {
+          ...cardStartPosition.user,
+          [cardId]: 1
+        }
+        dispatcher({ type: 'USER_CARD_POSITION', payload: {...userPosition} })
       }
-      dispatcher({ type: 'USER_CARD_POSITION', payload: {...userPosition} })
     }
   }
 
@@ -234,12 +236,9 @@ const Home = () => {
     </Header>
     <Container>
       <div className='board npc'>
-        <Card id='cn1' data={Store?.redPokemons?.pokemon1} change={false}/>
-        <Card id='cn2' data={Store?.redPokemons?.pokemon2} change={false}/>
-        <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={false}/>
-        {/* <Card id='cn1' data={Store?.redPokemons?.pokemon1} change={changeCards.card1}/>
+        <Card id='cn1' data={Store?.redPokemons?.pokemon1} change={changeCards.card1}/>
         <Card id='cn2' data={Store?.redPokemons?.pokemon2} change={changeCards.card2}/>
-        <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={changeCards.card3}/> */}
+        <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={changeCards.card3}/>
       </div>
       <div className='mid'>
         <H2T showDisplay={showVictoryMessage}>Team {winner} Winer !!!</H2T>
@@ -255,9 +254,21 @@ const Home = () => {
         <H2 showDisplay={Store.choicePokemonMessage}>Choose a Pokemon</H2>
       </div>
       <div className='board user'>
-        <Card id='cu1' data={Store?.bluePokemons?.pokemon1} onClick={()=>cardSelected('user','cu1')} player='user'/>
-        <Card id='cu2' data={Store?.bluePokemons?.pokemon2} onClick={()=>cardSelected('user','cu2')} player='user'/>
-        <Card id='cu3' data={Store?.bluePokemons?.pokemon3} onClick={()=>cardSelected('user','cu3')} player='user'/>
+        <Card 
+          id='cu1' 
+          data={Store?.bluePokemons?.pokemon1} 
+          onClick={()=>cardSelected('user','cu1')} 
+          player='user'/>
+        <Card 
+          id='cu2' 
+          data={Store?.bluePokemons?.pokemon2} 
+          onClick={()=>cardSelected('user','cu2')} 
+          player='user'/>
+        <Card 
+          id='cu3' 
+          data={Store?.bluePokemons?.pokemon3} 
+          onClick={()=>cardSelected('user','cu3')} 
+          player='user'/>
       </div>
     </Container>
     </>
