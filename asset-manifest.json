@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/yankenpokemon/static/css/main.a17a3546.chunk.css",
-    "main.js": "/yankenpokemon/static/js/main.8f5d8e14.chunk.js",
-    "main.js.map": "/yankenpokemon/static/js/main.8f5d8e14.chunk.js.map",
+    "main.js": "/yankenpokemon/static/js/main.246283c0.chunk.js",
+    "main.js.map": "/yankenpokemon/static/js/main.246283c0.chunk.js.map",
     "runtime-main.js": "/yankenpokemon/static/js/runtime-main.e3a57ce6.js",
     "runtime-main.js.map": "/yankenpokemon/static/js/runtime-main.e3a57ce6.js.map",
     "static/js/2.c7d70814.chunk.js": "/yankenpokemon/static/js/2.c7d70814.chunk.js",
     "static/js/2.c7d70814.chunk.js.map": "/yankenpokemon/static/js/2.c7d70814.chunk.js.map",
     "index.html": "/yankenpokemon/index.html",
-    "precache-manifest.e6731faf1caa5e43952656f43828f8c1.js": "/yankenpokemon/precache-manifest.e6731faf1caa5e43952656f43828f8c1.js",
+    "precache-manifest.4c142ad66afe3719bd374ee943d730f2.js": "/yankenpokemon/precache-manifest.4c142ad66afe3719bd374ee943d730f2.js",
     "service-worker.js": "/yankenpokemon/service-worker.js",
     "static/css/main.a17a3546.chunk.css.map": "/yankenpokemon/static/css/main.a17a3546.chunk.css.map",
     "static/js/2.c7d70814.chunk.js.LICENSE.txt": "/yankenpokemon/static/js/2.c7d70814.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.e3a57ce6.js",
     "static/js/2.c7d70814.chunk.js",
     "static/css/main.a17a3546.chunk.css",
-    "static/js/main.8f5d8e14.chunk.js"
+    "static/js/main.246283c0.chunk.js"
   ]
 }
