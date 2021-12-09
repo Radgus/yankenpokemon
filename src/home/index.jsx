@@ -241,10 +241,10 @@ const Home = () => {
         <Card id='cn3' data={Store?.redPokemons?.pokemon3} change={changeCards.card3}/>
       </div>
       <div className='mid'>
-        <H2T showDisplay={showVictoryMessage}>Team {winner} Winer !!!</H2T>
+        <H2T showDisplay={showVictoryMessage}>Team {winner} Winner !!!</H2T>
         <H2T showDisplay={Store.teamWinerMessage}>Point for {Store.teamWinerPoint} team</H2T>
         <H1 showDisplay={Store.showPlay} onClick={() => playGame()}>Play</H1>
-        <H1 showDisplay={Store.showFigth} onClick={() => figth()}>Figth</H1>
+        <H1 showDisplay={Store.showFigth} onClick={() => figth()}>Fight</H1>
         <H1 
           showDisplay={Store.showPlayAgain} 
           borderRadius={'20%'}
