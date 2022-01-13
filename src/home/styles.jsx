@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import field from '../resource/img/f6.jpg';
 
 export const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 5rem);
   color: white;
   .board {
@@ -76,8 +76,20 @@ export const H2 = styled.h2`
   border-radius: 2rem;
   background-color: black;
   display: ${props => props.showDisplay ? 'inline' : 'none'};
+  @media (min-width: 700px) {
+    width: 45%;
+  }
+  @media (min-width: 1200px) {
+    width: 30%;
+  }
+  @media (min-height: 650px) {
+    bottom: 16rem;
+  }
 `;
 
 export const H2T = styled(H2)`
   top: 16rem;
+  @media (min-height: 650px) {
+    top: 21rem;
+  }
 `;

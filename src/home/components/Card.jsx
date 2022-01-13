@@ -3,7 +3,7 @@ import Styled from 'styled-components';
 import cardICon from '../../resource/img/card-icon.png';
 
 const Container = Styled.div`
-  width: 28%;
+  width: 10rem;
   height: 100%;
   cursor: pointer;
   display: flex;
@@ -18,8 +18,9 @@ const Img = Styled.img`
 `;
 
 const ImgNPC = Styled.img`
-  width: ${props => props.width ? 'inline' : '100%'};
+  width: ${props => props.width ? props.width : '100%'};
   display: ${props => props.showDisplay ? 'inline' : 'none'};
+  margin: 0 auto;
 `;
 
 const Card = ({id, data={}, onClick, player='npc', change=true }) => {
@@ -29,7 +30,7 @@ const Card = ({id, data={}, onClick, player='npc', change=true }) => {
       { player === 'npc' 
         ? <>
             <ImgNPC src={data?.sprites?.front_default} alt="pokemon" showDisplay={!change}/>
-            <ImgNPC src={cardICon} alt="pokemon card" showDisplay={change} width={'80%'}/>
+            <ImgNPC src={cardICon} alt="pokemon card" showDisplay={change} width={'75%'}/>
           </>
         : <Img src={data?.sprites?.front_default} alt="pokemon"/>
       }
