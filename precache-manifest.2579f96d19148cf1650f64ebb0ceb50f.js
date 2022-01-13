@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5f959972ada7fd4ae39eb5dd49a8f3fb",
+    "revision": "05e686300b3568b8f9b8d0a3c62da677",
     "url": "/yankenpokemon/index.html"
   },
   {
-    "revision": "c83c2c1403f4db1ceba2",
-    "url": "/yankenpokemon/static/css/main.a17a3546.chunk.css"
+    "revision": "cea52633c6737dd7004f",
+    "url": "/yankenpokemon/static/css/main.3a279af2.chunk.css"
   },
   {
     "revision": "f63cb84eec5916281ec0",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/yankenpokemon/static/js/2.c7d70814.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "c83c2c1403f4db1ceba2",
-    "url": "/yankenpokemon/static/js/main.246283c0.chunk.js"
+    "revision": "cea52633c6737dd7004f",
+    "url": "/yankenpokemon/static/js/main.8287c66b.chunk.js"
   },
   {
     "revision": "a3522eb363692dd4fa9a",
